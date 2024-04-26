@@ -20,7 +20,7 @@ def detect_pupil(eye):
 
 cap = cv2.VideoCapture(0)
 
-font = cv2.FONT_HERSHEY_SIMPLEX  # Font for text overlay
+font = cv2.FONT_HERSHEY_SIMPLEX 
 
 while True:
   ret, frame = cap.read()
@@ -32,7 +32,7 @@ while True:
   faces = face_cascade.detectMultiScale(gray, 1.3, 5)
 
   for (x, y, w, h) in faces:
-    cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)  # Draw face rectangle
+    cv2.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2) 
     roi_gray = gray[y:y+h, x:x+w]
     roi_color = frame[y:y+h, x:x+w]
     eyes = eye_cascade.detectMultiScale(roi_gray)
@@ -40,15 +40,15 @@ while True:
     cv2.putText(frame, 'Face', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
     for (ex, ey, ew, eh) in eyes:
-      cv2.rectangle(roi_color, (ex, ey), (ex+ew, ey+eh), (0, 255, 0), 2)  # Draw eye rectangle
+      cv2.rectangle(roi_color, (ex, ey), (ex+ew, ey+eh), (0, 255, 0), 2) 
       pupil_position = detect_pupil(roi_color[ey:ey+eh, ex:ex+ew])
       if pupil_position:
-        cv2.circle(roi_color, (ex+pupil_position[0], ey+pupil_position[1]), 3, (0, 0, 255), -1)  # Draw pupil circle
-        cv2.putText(roi_color, "Eye with Pupil", (ex, ey-5), font, 0.5, (0, 0, 255), 2)  # Text overlay for eye with pupil
+        cv2.circle(roi_color, (ex+pupil_position[0], ey+pupil_position[1]), 3, (0, 0, 255), -1)
+        cv2.putText(roi_color, "Eye with Pupil", (ex, ey-5), font, 0.5, (0, 0, 255), 2)
 
     for (sx, sy, sw, sh) in smiles:
-      cv2.rectangle(roi_color, (sx, sy), (sx+sw, sy+sh), (0, 0, 255), 2)  # Draw smile rectangle
-      cv2.putText(roi_color, "Smile", (sx, sy-5), font, 0.5, (0, 0, 255), 2)  # Text overlay for smile
+      cv2.rectangle(roi_color, (sx, sy), (sx+sw, sy+sh), (0, 0, 255), 2)
+      cv2.putText(roi_color, "Smile", (sx, sy-5), font, 0.5, (0, 0, 255), 2)
 
   cv2.imshow('Face, Eye and Smile Detection', frame)
 
